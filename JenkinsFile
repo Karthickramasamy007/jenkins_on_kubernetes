@@ -14,7 +14,7 @@
 pipeline {
     agent {
         kubernetes {
-            yaml readYaml file: 'python-agent.yaml' // Reading the external YAML file
+            yaml readYaml(file: 'python-agent.yaml') // Correct syntax for reading YAML file
         }
     }
     stages {
