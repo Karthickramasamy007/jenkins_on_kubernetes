@@ -14,24 +14,24 @@
 pipeline {
   agent {
     kubernetes {
-      yaml '''
+      # k8s-python.yaml
         apiVersion: v1
         kind: Pod
         spec:
-          containers:
-          - name: maven
-            image: maven:alpine
+        containers:
+        - name: python
+            image: python:3.9-alpine
             command:
             - cat
             tty: true
-        '''
-    }
+
+            }
   }
   stages {
-    stage('Run maven') {
+    stage('Check Python Version') {
       steps {
-        container('maven') {
-          sh 'mvn -version'
+        container('python') {
+          sh 'python --version' // Check Python version inside the container
         }
       }
     }
