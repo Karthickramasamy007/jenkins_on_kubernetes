@@ -12,7 +12,7 @@
 // }
 
 pipeline {
-    agent { label 'python-agent' }  // This label matches the one configured in Kubernetes pod template
+    agent { label 'jenkins-slave' }  // This label matches the one configured in Kubernetes pod template
     stages {
         stage('Print Python Version') {
             steps {
