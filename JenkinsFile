@@ -12,28 +12,18 @@
 // }
 
 pipeline {
-  agent {
-    kubernetes {
-      yaml '''
-        apiVersion: v1
-        kind: Pod
-        spec:
-          containers:
-          - name: python
-            image: python:3.9-alpine
-            command:
-            - cat
-            tty: true
-      '''
-    }
-  }
-  stages {
-    stage('Check Python Version') {
-      steps {
-        container('python') {
-          sh 'python --version' // Check Python version inside the container
+    agent {
+        kubernetes {
+            yaml readYaml file: 'python-agent.yaml' // Reading the external YAML file
         }
-      }
     }
-  }
+    stages {
+        stage('Check Python Version') {
+            steps {
+                container('python') {
+                    sh 'python --version'  // Check Python version inside the container
+                }
+            }
+        }
+    }
 }
