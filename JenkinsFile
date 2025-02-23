@@ -12,15 +12,28 @@
 // }
 
 pipeline {
-    agent { label 'jenkins-slave' }  // This label matches the one configured in Kubernetes pod template
-    stages {
-        stage('Print Python Version') {
-            steps {
-                script {
-                    // Running the command to print the Python version
-                    sh 'python3 --version'
-                }
-            }
-        }
+  agent {
+    kubernetes {
+      yaml '''
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+          - name: maven
+            image: maven:alpine
+            command:
+            - cat
+            tty: true
+        '''
     }
+  }
+  stages {
+    stage('Run maven') {
+      steps {
+        container('maven') {
+          sh 'mvn -version'
+        }
+      }
+    }
+  }
 }
