@@ -1,12 +1,26 @@
-node('jenkins-slave') {
+// node('jenkins-slave') {
     
-     stage('test pipeline') {
-        sh(script: """
-            echo "hello"
-           git clone https://github.com/marcel-dempers/docker-development-youtube-series.git
-           cd ./docker-development-youtube-series/golang
+//      stage('test pipeline') {
+//         sh(script: """
+//             echo "hello"
+//            git clone https://github.com/marcel-dempers/docker-development-youtube-series.git
+//            cd ./docker-development-youtube-series/golang
            
-           docker build . -t test
-        """)
+//            docker build . -t test
+//         """)
+//     }
+// }
+
+pipeline {
+    agent { label 'python-agent' }  // This label matches the one configured in Kubernetes pod template
+    stages {
+        stage('Print Python Version') {
+            steps {
+                script {
+                    // Running the command to print the Python version
+                    sh 'python3 --version'
+                }
+            }
+        }
     }
 }
